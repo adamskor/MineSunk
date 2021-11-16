@@ -24,12 +24,15 @@ private:
   Face 4: norm = (0,0,1), vertices: 3, 7, 6, 2
   Face 5: norm = (0,0,-1), vertices: 0, 4, 5, 1
   */
-  sf::Vector3f v0, v1, v2, v3, v4, v5, v6, v7;
+
+  std::vector<sf::Vector3f> vertices;
   std::vector<sf::Vector3f> faceNormals;
   std::vector<int> activeFaces;
-  sf::Vector2f Scr_v0, Scr_v1, Scr_v2, Scr_v3, Scr_v4, Scr_v5;
+  sf::Vector2f Scr_v0, Scr_v1, Scr_v2, Scr_v3, Scr_v4, Scr_v5, Scr_v6, Scr_v7;
   std::vector<std::shared_ptr<sf::ConvexShape>> faces;
-
+  int nearestVertice;
+  float distanceVertice;
+  float startDistance = 101;
 private:
   sf::Vector3f position;
 private:

@@ -31,6 +31,7 @@ public:
   float DistanceToCam(const sf::Vector3f& vec);
   float Dot(const sf::Vector3f& A, const sf::Vector3f& B);
   float AngleAB(const sf::Vector3f& A, const sf::Vector3f& B);
+  float AngleABVec2(const sf::Vector2f& A, const sf::Vector2f& B);
 public:
   void TiltUp();
   void TiltDown();
@@ -62,9 +63,6 @@ private:
   float horizontalFOV;
   float verticalFOV;
   float renderDistance;
-  sf::ConvexShape square;
-  sf::ConvexShape floor;
-  std::vector<sf::Vector3f> verticesSquare;
 private:
   Settings* settings;
 

@@ -6,7 +6,7 @@
 
 int main(){
 
-  World world = World(sf::Vector3f(2,2,0));
+  World world = World(sf::Vector3f(-2,-2,0));
   world.run();
 /*
   sf::Vector3f start = sf::Vector3f(0,-5,0);

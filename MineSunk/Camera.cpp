@@ -28,20 +28,6 @@ Camera::Camera(sf::Vector3f initPosition, Settings* initSettings)
   info.setCharacterSize(24);
   info.setFillColor(sf::Color::White);
 
-
-
-
-
-
-  square = sf::ConvexShape(4);
-  square.setFillColor(sf::Color::Blue);
-  square.setOutlineColor(sf::Color::Red);
-  square.setOutlineThickness(4);
-  verticesSquare.push_back(sf::Vector3f(0,-1,-1));
-  verticesSquare.push_back(sf::Vector3f(0,1,-1));
-  verticesSquare.push_back(sf::Vector3f(0,1,1));
-  verticesSquare.push_back(sf::Vector3f(0,-1,1));
-
   UpdateGeometry();
 }
 
@@ -72,15 +58,16 @@ sf::Vector2f Camera::MapCoordinateToPoint(const sf::Vector3f& vec)
   //{
   //  return sf::Vector2f(-1,-1);
   //}
-  auto d = Dot((screenCenter - vec), screenNormal)/dotNorVec;
-  auto p = vec + camToPoint*d;
-  auto centerToP = p - screenCenter;
-  auto cToPonHB = ProjectAonB(centerToP, screenHorizontalBasis);
-  auto cToPonVB = ProjectAonB(centerToP, screenVerticalBasis);
-  auto sizeOnHB = Size(cToPonHB);
-  auto sizeOnVB = Size(cToPonVB);
-  auto WithHB = Dot(cToPonHB, screenHorizontalBasis);
-  auto WithVB = Dot(cToPonVB, screenVerticalBasis);
+  float d = Dot((screenCenter - vec), screenNormal)/dotNorVec;
+  sf::Vector3f p = vec + camToPoint*d;
+  sf::Vector3f centerToP = p - screenCenter;
+  sf::Vector3f cToPonHB = ProjectAonB(centerToP, screenHorizontalBasis);
+  sf::Vector3f cToPonVB = ProjectAonB(centerToP, screenVerticalBasis);
+  float sizeOnHB = Size(cToPonHB);
+  float sizeOnVB = Size(cToPonVB);
+  float WithHB = Dot(cToPonHB, screenHorizontalBasis);
+  float WithVB = Dot(cToPonVB, screenVerticalBasis);
+  //std::cout << "HB: " << sizeOnHB << " VB: " << sizeOnVB <<std::endl;
   if (WithHB > 0 && WithVB > 0){
     auto xPixel = screenWidthPix/2 + (sizeOnHB/screenWidth)*screenWidthPix/2;
     auto yPixel = screenHeightPix/2 + (sizeOnVB/screenHeight)*screenHeightPix/2;
@@ -157,20 +144,16 @@ void Camera::UpdateGeometry()
   screenNormal = Normalize(screenNormal);
   screenHorizontalBasis = Normalize(screenHorizontalBasis);
   screenVerticalBasis = -Normalize(screenVerticalBasis);
-  
+
   infoText = "Position: (" + std::to_string(position.x) + ", " + std::to_string(position.y) +
               ", " + std::to_string(position.z) + ") \n" +  "Direction: (" + std::to_string(screenNormal.x) + ", " + std::to_string(screenNormal.y) +
                           ", " + std::to_string(screenNormal.z) + ")";
 
   info.setString(infoText);
-  for (size_t i = 0; i < verticesSquare.size(); i++){
-    square.setPoint(i, MapCoordinateToPoint(verticesSquare[i]));
-  }
 
 }
 
 void Camera::Render(sf::RenderWindow* window){
-  window->draw(square);
   window->draw(info);
 }
 
@@ -214,6 +197,16 @@ float Camera::AngleAB(const sf::Vector3f& A, const sf::Vector3f& B)
   auto size_B = Size(B);
   if(size_A != 0 && size_B != 0){
     return acos(Dot(A,B)/(size_A*size_B))*RADTODEG;
+  }
+  return 0;
+}
+
+float Camera::AngleABVec2(const sf::Vector2f& A, const sf::Vector2f& B)
+{
+  auto size_A = sqrt(A.x*A.x + A.y*A.y);
+  auto size_B = sqrt(B.x*B.x + B.y*B.y);
+  if(size_A != 0 && size_B != 0){
+    return acos((A.x*B.x + A.y*B.y)/(size_A*size_B))*RADTODEG;
   }
   return 0;
 }
