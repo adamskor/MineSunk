@@ -30,17 +30,17 @@ Camera::Camera(sf::Vector3f initPosition, Settings* initSettings)
 
 
 
-  std::cout << screenWidth << " " << screenHeight << std::endl;
+
 
 
   square = sf::ConvexShape(4);
   square.setFillColor(sf::Color::Blue);
   square.setOutlineColor(sf::Color::Red);
   square.setOutlineThickness(4);
-  verticesSquare.push_back(sf::Vector3f(-1,-1,0));
-  verticesSquare.push_back(sf::Vector3f(1,-1,0));
-  verticesSquare.push_back(sf::Vector3f(1,1,0));
-  verticesSquare.push_back(sf::Vector3f(-1,1,0));
+  verticesSquare.push_back(sf::Vector3f(0,-1,-1));
+  verticesSquare.push_back(sf::Vector3f(0,1,-1));
+  verticesSquare.push_back(sf::Vector3f(0,1,1));
+  verticesSquare.push_back(sf::Vector3f(0,-1,1));
 
   UpdateGeometry();
 }
@@ -48,6 +48,15 @@ Camera::Camera(sf::Vector3f initPosition, Settings* initSettings)
 void Camera::Print(sf::Vector3f vec){
   std::cout << "Print Vector: (" << vec.x << ", "
             << vec.y << ", " << vec.z << ")" << std::endl;
+}
+
+sf::Vector3f Camera::getPosition()
+{
+  return position;
+}
+sf::Vector3f Camera::getNormal()
+{
+  return screenNormal;
 }
 
 sf::Vector2f Camera::MapCoordinateToPoint(const sf::Vector3f& vec)
@@ -72,8 +81,6 @@ sf::Vector2f Camera::MapCoordinateToPoint(const sf::Vector3f& vec)
   auto sizeOnVB = Size(cToPonVB);
   auto WithHB = Dot(cToPonHB, screenHorizontalBasis);
   auto WithVB = Dot(cToPonVB, screenVerticalBasis);
-  std::cout << WithHB << std::endl;
-  std::cout << WithVB << std::endl;
   if (WithHB > 0 && WithVB > 0){
     auto xPixel = screenWidthPix/2 + (sizeOnHB/screenWidth)*screenWidthPix/2;
     auto yPixel = screenHeightPix/2 + (sizeOnVB/screenHeight)*screenHeightPix/2;
@@ -150,10 +157,7 @@ void Camera::UpdateGeometry()
   screenNormal = Normalize(screenNormal);
   screenHorizontalBasis = Normalize(screenHorizontalBasis);
   screenVerticalBasis = -Normalize(screenVerticalBasis);
-  std::cout << "NormalVec " << screenNormal.x << " " << screenNormal.y << " " << screenNormal.z << std::endl;
-  std::cout << "HBVec " << screenHorizontalBasis.x << " " << screenHorizontalBasis.y << " " << screenHorizontalBasis.z << std::endl;
-  std::cout << "VBVec " << screenVerticalBasis.x << " " << screenVerticalBasis.y << " " << screenVerticalBasis.z << std::endl;
-  std::cout << "Position " << position.x << " " << position.y << " " << position.z << std::endl;
+  
   infoText = "Position: (" + std::to_string(position.x) + ", " + std::to_string(position.y) +
               ", " + std::to_string(position.z) + ") \n" +  "Direction: (" + std::to_string(screenNormal.x) + ", " + std::to_string(screenNormal.y) +
                           ", " + std::to_string(screenNormal.z) + ")";

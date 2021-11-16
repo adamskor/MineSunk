@@ -7,7 +7,8 @@ World::World(sf::Vector3f startPosition){
   //window->setMouseCursorGrabbed(true);
   camera = std::make_shared<Camera>(startPosition, settings);
   eh = std::make_unique<EventHandler>(camera, window);
-  //blocks.push_back(std::make_unique<Block>(sf::Vector3f(0, 2, 0)));
+  blocks.push_back(std::make_unique<Block>(sf::Vector3f(0, 0, 0), camera));
+  blocks.push_back(std::make_unique<Block>(sf::Vector3f(1, 0, 0), camera));
 
 }
 
@@ -31,6 +32,8 @@ void World::run(){
    window->clear();
    // Draw some graphical entities
    camera->Render(window);
+   blocks[0]->OnRender(window);
+   //blocks[1]->OnRender(window);
    // End the current frame and display its contents on screen
    window->display();
 }

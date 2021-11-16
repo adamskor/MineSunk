@@ -13,6 +13,9 @@ public:
   Camera() = default;
   Camera(sf::Vector3f initPosition, Settings* initSettings);
 public:
+  sf::Vector3f getPosition();
+  sf::Vector3f getNormal();
+public:
   void Render(sf::RenderWindow* window);
 public:
   sf::Vector2f MapCoordinateToPoint(const sf::Vector3f& vec);
