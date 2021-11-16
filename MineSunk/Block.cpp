@@ -15,12 +15,6 @@ Block::Block(sf::Vector3f initPosition, std::shared_ptr<Camera> initCamera){
   vertices.push_back(sf::Vector3f(position.x + 1, position.y + 1, position.z));
   vertices.push_back(sf::Vector3f(position.x + 1, position.y + 1, position.z + 1));
   vertices.push_back(sf::Vector3f(position.x    , position.y + 1, position.z + 1));
-  faceNormals.push_back(sf::Vector3f(1,0,0));
-  faceNormals.push_back(sf::Vector3f(-1,0,0));
-  faceNormals.push_back(sf::Vector3f(0,1,0));
-  faceNormals.push_back(sf::Vector3f(0,-1,0));
-  faceNormals.push_back(sf::Vector3f(0,0,1));
-  faceNormals.push_back(sf::Vector3f(0,0,-1));
   auto f0 = std::make_shared<sf::ConvexShape>(4);
   auto f1 = std::make_shared<sf::ConvexShape>(4);
   auto f2 = std::make_shared<sf::ConvexShape>(4);
@@ -42,7 +36,22 @@ void print(sf::Vector2f vec){
   std::cout << vec.x << "  " << vec.y << std::endl;
 }
 
+void Block::setHiddenFaces(const std::vector<int>& hidFaces)
+{
+  hiddenFaces.clear();
+  hiddenFaces = hidFaces;
+}
+
+void Block::setVisible(bool vis)
+{
+  visible = vis;
+}
+
 void Block::OnRender(sf::RenderWindow* window){
+  if (!visible)
+  {
+    return;
+  }
   activeFaces.clear();
   for (size_t i = 0; i < vertices.size(); i++){
     distanceVertice = camera_ptr->DistanceToCam(vertices[i]);
@@ -51,8 +60,8 @@ void Block::OnRender(sf::RenderWindow* window){
       nearestVertice = i;
     }
   }
-
-  if (startDistance > 100){
+  if (startDistance > 100)
+  {
     return;
   }
 
@@ -65,23 +74,26 @@ void Block::OnRender(sf::RenderWindow* window){
   Scr_v6 = camera_ptr->MapCoordinateToPoint(vertices[6]);
   Scr_v7 = camera_ptr->MapCoordinateToPoint(vertices[7]);
 
-  switch(nearestVertice){
+  switch (nearestVertice){
     case 0:
     {
       faces[0]->setPoint(0, Scr_v0);
       faces[0]->setPoint(1, Scr_v3);
       faces[0]->setPoint(2, Scr_v7);
       faces[0]->setPoint(3, Scr_v4);
+      activeFaces.push_back(2);
 
       faces[1]->setPoint(0, Scr_v0);
       faces[1]->setPoint(1, Scr_v3);
       faces[1]->setPoint(2, Scr_v2);
       faces[1]->setPoint(3, Scr_v1);
+      activeFaces.push_back(3);
 
       faces[2]->setPoint(0, Scr_v0);
       faces[2]->setPoint(1, Scr_v4);
       faces[2]->setPoint(2, Scr_v5);
       faces[2]->setPoint(3, Scr_v1);
+      activeFaces.push_back(5);
 
       break;
     }
@@ -91,16 +103,19 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v2);
       faces[0]->setPoint(2, Scr_v6);
       faces[0]->setPoint(3, Scr_v5);
+      activeFaces.push_back(0);
 
       faces[1]->setPoint(0, Scr_v0);
       faces[1]->setPoint(1, Scr_v3);
       faces[1]->setPoint(2, Scr_v2);
       faces[1]->setPoint(3, Scr_v1);
+      activeFaces.push_back(3);
 
       faces[2]->setPoint(0, Scr_v0);
       faces[2]->setPoint(1, Scr_v4);
       faces[2]->setPoint(2, Scr_v5);
       faces[2]->setPoint(3, Scr_v1);
+      activeFaces.push_back(5);
 
       break;
     }
@@ -110,17 +125,20 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v2);
       faces[0]->setPoint(2, Scr_v6);
       faces[0]->setPoint(3, Scr_v5);
+      activeFaces.push_back(0);
 
       faces[1]->setPoint(0, Scr_v0);
       faces[1]->setPoint(1, Scr_v3);
       faces[1]->setPoint(2, Scr_v2);
       faces[1]->setPoint(3, Scr_v1);
+      activeFaces.push_back(3);
 
       faces[2]->setPoint(0, Scr_v3);
       faces[2]->setPoint(1, Scr_v7);
       faces[2]->setPoint(2, Scr_v6);
       faces[2]->setPoint(3, Scr_v2);
-      
+      activeFaces.push_back(4);
+
       break;
     }
     case 3:
@@ -129,16 +147,19 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v3);
       faces[0]->setPoint(2, Scr_v7);
       faces[0]->setPoint(3, Scr_v4);
+      activeFaces.push_back(1);
 
       faces[1]->setPoint(0, Scr_v0);
       faces[1]->setPoint(1, Scr_v3);
       faces[1]->setPoint(2, Scr_v2);
       faces[1]->setPoint(3, Scr_v1);
+      activeFaces.push_back(3);
 
       faces[2]->setPoint(0, Scr_v3);
       faces[2]->setPoint(1, Scr_v7);
       faces[2]->setPoint(2, Scr_v6);
       faces[2]->setPoint(3, Scr_v2);
+      activeFaces.push_back(4);
 
       break;
     }
@@ -148,16 +169,19 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v3);
       faces[0]->setPoint(2, Scr_v7);
       faces[0]->setPoint(3, Scr_v4);
+      activeFaces.push_back(1);
 
       faces[1]->setPoint(0, Scr_v4);
       faces[1]->setPoint(1, Scr_v7);
       faces[1]->setPoint(2, Scr_v6);
       faces[1]->setPoint(3, Scr_v5);
+      activeFaces.push_back(2);
 
       faces[2]->setPoint(0, Scr_v0);
       faces[2]->setPoint(1, Scr_v4);
       faces[2]->setPoint(2, Scr_v5);
       faces[2]->setPoint(3, Scr_v1);
+      activeFaces.push_back(5);
 
       break;
     }
@@ -167,16 +191,19 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v2);
       faces[0]->setPoint(2, Scr_v6);
       faces[0]->setPoint(3, Scr_v5);
+      activeFaces.push_back(0);
 
       faces[1]->setPoint(0, Scr_v4);
       faces[1]->setPoint(1, Scr_v7);
       faces[1]->setPoint(2, Scr_v6);
       faces[1]->setPoint(3, Scr_v5);
+      activeFaces.push_back(2);
 
       faces[2]->setPoint(0, Scr_v0);
       faces[2]->setPoint(1, Scr_v4);
       faces[2]->setPoint(2, Scr_v5);
       faces[2]->setPoint(3, Scr_v1);
+      activeFaces.push_back(5);
 
       break;
     }
@@ -186,16 +213,19 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v2);
       faces[0]->setPoint(2, Scr_v6);
       faces[0]->setPoint(3, Scr_v5);
+      activeFaces.push_back(0);
 
       faces[1]->setPoint(0, Scr_v4);
       faces[1]->setPoint(1, Scr_v7);
       faces[1]->setPoint(2, Scr_v6);
       faces[1]->setPoint(3, Scr_v5);
+      activeFaces.push_back(2);
 
       faces[2]->setPoint(0, Scr_v3);
       faces[2]->setPoint(1, Scr_v7);
       faces[2]->setPoint(2, Scr_v6);
       faces[2]->setPoint(3, Scr_v2);
+      activeFaces.push_back(4);
 
       break;
     }
@@ -205,20 +235,24 @@ void Block::OnRender(sf::RenderWindow* window){
       faces[0]->setPoint(1, Scr_v3);
       faces[0]->setPoint(2, Scr_v7);
       faces[0]->setPoint(3, Scr_v4);
+      activeFaces.push_back(1);
 
       faces[1]->setPoint(0, Scr_v4);
       faces[1]->setPoint(1, Scr_v7);
       faces[1]->setPoint(2, Scr_v6);
       faces[1]->setPoint(3, Scr_v5);
+      activeFaces.push_back(2);
 
       faces[2]->setPoint(0, Scr_v3);
       faces[2]->setPoint(1, Scr_v7);
       faces[2]->setPoint(2, Scr_v6);
       faces[2]->setPoint(3, Scr_v2);
+      activeFaces.push_back(4);
 
       break;
     }
   }
+
   startDistance = 101;
 
   auto f0v1tov0 = faces[0]->getPoint(1) - faces[0]->getPoint(0);
@@ -237,17 +271,23 @@ void Block::OnRender(sf::RenderWindow* window){
   auto f2v2tov3 = faces[2]->getPoint(2) - faces[2]->getPoint(3);
 
   if(camera_ptr->AngleABVec2(f0v1tov0, f0v1tov2) > 3 &&
-     camera_ptr->AngleABVec2(f0v2tov1, f0v2tov3) > 3)
+     camera_ptr->AngleABVec2(f0v2tov1, f0v2tov3) > 3 &&
+    (std::find(hiddenFaces.begin(), hiddenFaces.end(),
+                 activeFaces[0]) == hiddenFaces.end()))
   {
        window->draw(*faces[0]);
   }
-  if(camera_ptr->AngleABVec2(f1v1tov0, f1v1tov2) > 3 &&
-     camera_ptr->AngleABVec2(f1v2tov1, f1v2tov3) > 3)
+  if (camera_ptr->AngleABVec2(f1v1tov0, f1v1tov2) > 3 &&
+     camera_ptr->AngleABVec2(f1v2tov1, f1v2tov3) > 3 &&
+     (std::find(hiddenFaces.begin(), hiddenFaces.end(),
+                  activeFaces[1]) == hiddenFaces.end()))
   {
        window->draw(*faces[1]);
   }
   if(camera_ptr->AngleABVec2(f2v1tov0, f2v1tov2) > 3 &&
-     camera_ptr->AngleABVec2(f2v2tov1, f2v2tov3) > 3)
+     camera_ptr->AngleABVec2(f2v2tov1, f2v2tov3) > 3 &&
+     (std::find(hiddenFaces.begin(), hiddenFaces.end(),
+                  activeFaces[2]) == hiddenFaces.end()))
   {
        window->draw(*faces[2]);
   }

@@ -16,7 +16,7 @@ public:
   sf::Vector3f getPosition();
   sf::Vector3f getNormal();
 public:
-  void Render(sf::RenderWindow* window);
+  void Render(sf::RenderWindow* window, int tm);
 public:
   sf::Vector2f MapCoordinateToPoint(const sf::Vector3f& vec);
   bool isInView(const sf::Vector3f& vec);
@@ -54,6 +54,8 @@ private:
   sf::Font font;
   sf::Text info;
   std::string infoText;
+  sf::Text fps;
+  std::string fpsText;
 private:
   float screenDistance;
   int screenWidthPix;

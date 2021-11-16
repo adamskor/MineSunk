@@ -7,19 +7,20 @@ World::World(sf::Vector3f startPosition){
   //window->setMouseCursorGrabbed(true);
   camera = std::make_shared<Camera>(startPosition, settings);
   eh = std::make_unique<EventHandler>(camera, window);
-  for (int i = 0; i < 10; i++){
-    blocks.push_back(std::make_unique<Block>(sf::Vector3f(0, i, 0), camera));
-    blocks.push_back(std::make_unique<Block>(sf::Vector3f(1, 1, i), camera));
-  }
-  blocks.push_back(std::make_unique<Block>(sf::Vector3f(0, 0, 0), camera));
+  auto inPos = sf::Vector3f(0,0,-16);
+  chunk = std::make_unique<Chunk>(inPos, camera);
+
 
 
 
 }
 
 void World::run(){
+
   while (window->isOpen())
 {
+   sf::Clock clock;
+   clock.restart();
    // Event processing
    sf::Event event;
    while (window->pollEvent(event))
@@ -36,12 +37,13 @@ void World::run(){
    // Clear the whole window before rendering a new frame
    window->clear();
    // Draw some graphical entities
-   camera->Render(window);
-   for (size_t i = 0; i < blocks.size(); i++){
-     blocks[i]->OnRender(window);
-   }
+
+   chunk->OnRender(window);
+   camera->Render(window,timeMS);
    //blocks[1]->OnRender(window);
    // End the current frame and display its contents on screen
    window->display();
+   sf::Time time = clock.getElapsedTime();
+   timeMS = time.asMilliseconds();
 }
 }

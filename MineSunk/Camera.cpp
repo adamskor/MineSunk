@@ -27,6 +27,10 @@ Camera::Camera(sf::Vector3f initPosition, Settings* initSettings)
   info.setFont(font);
   info.setCharacterSize(24);
   info.setFillColor(sf::Color::White);
+  fps.setFont(font);
+  fps.setCharacterSize(24);
+  fps.setFillColor(sf::Color::White);
+  fps.setPosition(sf::Vector2f(0, 48));
 
   UpdateGeometry();
 }
@@ -153,8 +157,11 @@ void Camera::UpdateGeometry()
 
 }
 
-void Camera::Render(sf::RenderWindow* window){
+void Camera::Render(sf::RenderWindow* window, int tm){
+  fpsText = "FPS: " + std::to_string(1000/tm);
+  fps.setString(fpsText);
   window->draw(info);
+  window->draw(fps);
 }
 
 float Camera::Size(const sf::Vector3f& vec){
