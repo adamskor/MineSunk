@@ -21,7 +21,7 @@ private:
 class BlockFace
 {
 public:
-  BlockFace()
+  BlockFace();
 
 
 

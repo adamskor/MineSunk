@@ -10,10 +10,10 @@ Chunk::Chunk(const sf::Vector3f& initPosition,
   for (int z = 0; z < size.z; z++){
     for (int x = 0; x < size.x; x++){
       for (int y = 0; y < size.y; y++){
-        blocks.push_back(std::make_unique<Block>(sf::Vector3f(position.x + x,
-                                                              position.y + y,
-                                                              position.z + z),
-                                                              camera_ptr));
+        //blocks.push_back(std::make_unique<Block>(sf::Vector3f(position.x + x,
+                    //                                          position.y + y,
+                  //                                            position.z + z),
+  //                                            camera_ptr));
       }
     }
   }
@@ -42,7 +42,7 @@ void Chunk::OnRender(sf::RenderWindow* window)
 {
   for (size_t i = 0; i < blocks.size(); i++)
   {
-    blocks[i]->OnRender(window);
+    //blocks[i]->OnRender(window);
   }
 }
 
@@ -73,10 +73,10 @@ void Chunk::OnChange()
     if (curr.x == comp.x && curr.y == comp.y && curr.z == comp.z + 1)
       hidFaces.push_back(5);
     if (hidFaces.size() == 6){
-      blocks[i]->setVisible(false);
+      //blocks[i]->setVisible(false);
     }else{
-      blocks[i]->setVisible(true);
-      blocks[i]->setHiddenFaces(hidFaces);
+      //blocks[i]->setVisible(true);
+      //blocks[i]->setHiddenFaces(hidFaces);
     }
 
   /*
