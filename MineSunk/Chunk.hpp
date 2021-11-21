@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include "Block.hpp"
 #include "Camera.hpp"
+#include <iostream>
 
 class Chunk
 {
@@ -28,6 +29,9 @@ private:
   */
 private:
   const sf::Vector3f size;
+  int n_Blocks;
+  int x_Size;
+  int xy_Size;
   const sf::Vector3f position;
   std::vector<int> hidFaces;
   std::shared_ptr<Camera> camera_ptr;

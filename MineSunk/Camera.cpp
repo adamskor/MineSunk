@@ -158,7 +158,7 @@ void Camera::UpdateGeometry()
 }
 
 void Camera::Render(sf::RenderWindow* window, int tm){
-  fpsText = "FPS: " + std::to_string(1000/tm);
+  fpsText = "FPS: " + std::to_string(1000/(tm + 0.001));
   fps.setString(fpsText);
   window->draw(info);
   window->draw(fps);

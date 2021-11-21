@@ -7,7 +7,7 @@ World::World(sf::Vector3f startPosition){
   //window->setMouseCursorGrabbed(true);
   camera = std::make_shared<Camera>(startPosition, settings);
   eh = std::make_unique<EventHandler>(camera, window);
-  auto inPos = sf::Vector3f(0,0,-16);
+  auto inPos = sf::Vector3f(0,0,0);
   chunk = std::make_unique<Chunk>(inPos, camera);
 
 
